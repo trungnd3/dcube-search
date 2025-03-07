@@ -1,4 +1,5 @@
 import { TextContent } from "../../interface/document";
+import HighlightedText from "../ui/HighlightedText";
 
 interface SearchResultItem {
   title: TextContent;
@@ -12,8 +13,8 @@ export default function SearchResultItem({
 
   return (
     <>
-      <h2 className="text-primary semibold">{title.Text}</h2>
-      <p className="regular-text">{excerpt.Text}</p>
+      <HighlightedText paragraph={title} className='text-primary semibold' tag="h2" />
+      <HighlightedText paragraph={excerpt} className='regular-text' />
       <a href={uri} className="regular-link cursor-pointer">{uri}</a>
     </>
   )
