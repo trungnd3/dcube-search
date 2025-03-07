@@ -1,11 +1,48 @@
 @import 'tailwindcss';
 
+@theme {
+  --color-primary: #1C76D5;
+}
+
 html,
 body,
-:root {
+#root {
   width: 100%;
-  font-family: 'Source Sans Pro';
+  height: auto;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
   font-weight: 400;
   line-height: 100%;
   letter-spacing: 0.5px;
+}
+
+.semibold {
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 28px;
+  letter-spacing: 0;
+}
+
+.lightbold {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 26px;
+  letter-spacing: 0;
+}
+
+.regular-link {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 26px;
+  letter-spacing: 0.12px;
+  color: #686868;
+}
+
+.regular-text {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.14px;
 }
