@@ -1,9 +1,18 @@
 import { Search, XIcon } from 'lucide-react';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import {
+  ChangeEvent,
+  FormEvent,
+  KeyboardEventHandler,
+  MouseEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { useRequest } from '../../hooks/use-request';
 import { Suggestion } from '../../interface/suggestion';
 import SearchSuggestion from './SearchSuggestion';
+import { cn } from '../../lib/util';
 
 export default function SearchForm() {
   const navigate = useNavigate();
@@ -12,8 +21,48 @@ export default function SearchForm() {
   const key = searchParams.get('key') || '';
   const [searchText, setSearchText] = useState(key);
   const [suggesting, setSuggesting] = useState(false);
+  const [activeSuggestIndex, setActiveSuggestIndex] = useState(-1);
+  const searchBoxRef = useRef<HTMLInputElement>(null);
+  const searchSuggestionRef = useRef<HTMLDivElement>(null);
 
   const { request, response } = useRequest<Suggestion>();
+  const { data, loading, error } = response;
+
+  useEffect(() => {
+    function bodyClickHandler(this: Window, e: MouseEvent) {
+      e.preventDefault();
+      if (!(e.target as HTMLElement).closest('form')) {
+        setSuggesting(false);
+        setActiveSuggestIndex(-1);
+        searchBoxRef.current?.blur();
+        document.body.classList.remove('overflow-hidden');
+      }
+    }
+
+    window.addEventListener('click', bodyClickHandler);
+
+    return () => {
+      window.removeEventListener('click', bodyClickHandler);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (activeSuggestIndex === -1) {
+      searchBoxRef.current?.focus();
+      searchSuggestionRef.current?.blur();
+    } else {
+      searchBoxRef.current?.blur();
+      searchSuggestionRef.current?.focus();
+    }
+  }, [activeSuggestIndex]);
+
+  useEffect(() => {
+    if (suggesting) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+  }, [suggesting]);
 
   const searchTextChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
@@ -24,7 +73,43 @@ export default function SearchForm() {
       // Fetch search suggestions
       request(import.meta.env.VITE_SUGGESTION_ENDPOINT!);
     } else {
-      setSuggesting(false)
+      setSuggesting(false);
+    }
+  };
+
+  const dismissHandler: MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    // Close suggestion
+    setSuggesting(false);
+
+    // Clear input, stay focus
+    setSearchText('');
+
+    searchBoxRef.current?.focus();
+  };
+
+  const keyUpHandler: KeyboardEventHandler<
+    HTMLInputElement | HTMLLIElement | HTMLDivElement
+  > = (event) => {
+    event.preventDefault();
+
+    if (!!data && !!data.suggestions && data.suggestions.length > 0) {
+      const len = data.suggestions.length;
+      if (event.key === 'ArrowDown') {
+        if (activeSuggestIndex < len - 1) {
+          setActiveSuggestIndex((prev) => prev + 1);
+        } else {
+          setActiveSuggestIndex(-1);
+        }
+      } else if (event.key === 'ArrowUp') {
+        if (activeSuggestIndex > -2) {
+          setActiveSuggestIndex((prev) => prev - 1);
+        } else {
+          setActiveSuggestIndex(len - 1);
+        }
+      }
     }
   };
 
@@ -34,28 +119,52 @@ export default function SearchForm() {
     navigate(searchText ? `/search-result?key=${searchText}` : `/`);
   };
 
-  const { data, loading, error } = response;
-
   return (
     <form
       className='w-full h-14 font-semibold text-lg leading-[26px]'
       onSubmit={submitHandler}
     >
-      <div className='group flex rounded-lg border border-[#E0E4E5] h-full has-focus-visible:border-primary'>
+      <div
+        className={cn(
+          'group flex rounded-lg border border-[#E0E4E5] h-full has-focus-visible:border-primary',
+          suggesting ? 'rounded-bl-none' : ''
+        )}
+      >
         <div className='flex-1 flex flex-col'>
           <div className='flex-1 flex justify-between px-4'>
             <input
               className='focus-visible:border-none focus-visible:outline-none flex-1'
               value={searchText}
               onChange={searchTextChangeHandler}
+              onKeyUp={keyUpHandler}
+              ref={searchBoxRef}
             />
-            <span className='relative flex justify-center items-center cursor-pointer'>
-              {!!searchText && <XIcon size={22} className='absolute right-0.5' />}
-            </span>
+            <div className='relative flex justify-center items-center'>
+              {!!searchText && (
+                <button
+                  className='absolute w-6 h-6 focus-visible:rounded-full cursor-pointer flex justify-center items-center'
+                  type='button'
+                  onClick={dismissHandler}
+                >
+                  <XIcon size={22} className='right-0.5' />
+                </button>
+              )}
+            </div>
           </div>
           {suggesting && (
-            <div className='relative'>
-              <SearchSuggestion data={data} loading={loading} error={error} />
+            <div
+              className='relative'
+              ref={searchSuggestionRef}
+              onKeyUp={keyUpHandler}
+              tabIndex={0}
+            >
+              <SearchSuggestion
+                data={data}
+                loading={loading}
+                error={error}
+                onKeyUp={keyUpHandler}
+                activeIndex={activeSuggestIndex}
+              />
             </div>
           )}
         </div>
