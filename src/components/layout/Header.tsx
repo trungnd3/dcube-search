@@ -7,7 +7,7 @@ export default function Header() {
     <header className='sticky top-0 w-full'>
       <Banner />
       <Container
-        className='bg-[#FFFFFF] shadow-[0_4px_8px_#E0E4E559] py-12'
+        className='bg-white shadow-primary py-12'
         innerClassName='justify-center md:justify-start items-center'
       >
         <SearchForm />

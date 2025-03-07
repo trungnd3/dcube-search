@@ -1,6 +1,9 @@
 import { Search, XIcon } from 'lucide-react';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
+import { useRequest } from '../../hooks/use-request';
+import { Suggestion } from '../../interface/suggestion';
+import SearchSuggestion from './SearchSuggestion';
 
 export default function SearchForm() {
   const navigate = useNavigate();
@@ -8,9 +11,21 @@ export default function SearchForm() {
 
   const key = searchParams.get('key') || '';
   const [searchText, setSearchText] = useState(key);
+  const [suggesting, setSuggesting] = useState(false);
+
+  const { request, response } = useRequest<Suggestion>();
 
   const searchTextChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchText(event.currentTarget.value);
+    const value = event.currentTarget.value;
+    setSearchText(value);
+
+    if (value.length >= 2) {
+      setSuggesting(true);
+      // Fetch search suggestions
+      request(import.meta.env.VITE_SUGGESTION_ENDPOINT!);
+    } else {
+      setSuggesting(false)
+    }
   };
 
   const submitHandler = async (event: FormEvent) => {
@@ -19,21 +34,30 @@ export default function SearchForm() {
     navigate(searchText ? `/search-result?key=${searchText}` : `/`);
   };
 
+  const { data, loading, error } = response;
+
   return (
     <form
       className='w-full h-14 font-semibold text-lg leading-[26px]'
       onSubmit={submitHandler}
     >
       <div className='group flex rounded-lg border border-[#E0E4E5] h-full has-focus-visible:border-primary'>
-        <div className='flex-1 flex justify-between px-4'>
-          <input
-            className='focus-visible:border-none focus-visible:outline-none flex-1'
-            value={searchText}
-            onChange={searchTextChangeHandler}
-          />
-          <span className='relative flex justify-center items-center cursor-pointer'>
-            {!!searchText && <XIcon size={22} className='absolute' />}
-          </span>
+        <div className='flex-1 flex flex-col'>
+          <div className='flex-1 flex justify-between px-4'>
+            <input
+              className='focus-visible:border-none focus-visible:outline-none flex-1'
+              value={searchText}
+              onChange={searchTextChangeHandler}
+            />
+            <span className='relative flex justify-center items-center cursor-pointer'>
+              {!!searchText && <XIcon size={22} className='absolute right-0.5' />}
+            </span>
+          </div>
+          {suggesting && (
+            <div className='relative'>
+              <SearchSuggestion data={data} loading={loading} error={error} />
+            </div>
+          )}
         </div>
         <button
           type='submit'
