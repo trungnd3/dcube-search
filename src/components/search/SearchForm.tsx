@@ -31,11 +31,9 @@ export default function SearchForm() {
             value={searchText}
             onChange={searchTextChangeHandler}
           />
-          {!!searchText && (
-            <span className='flex justify-center items-center cursor-pointer'>
-              <XIcon size={22} />
-            </span>
-          )}
+          <span className='relative flex justify-center items-center cursor-pointer'>
+            {!!searchText && <XIcon size={22} className='absolute' />}
+          </span>
         </div>
         <button
           type='submit'
