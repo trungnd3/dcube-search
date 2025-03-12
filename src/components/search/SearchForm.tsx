@@ -12,6 +12,7 @@ import { useNavigate, useSearchParams } from 'react-router';
 import { useRequest } from '../../hooks/use-request';
 import { Suggestion } from '../../interface/suggestion';
 import SearchSuggestion from './SearchSuggestion';
+import LoadingSpinner from '../ui/LoadingSpinner';
 import { cn } from '../../lib/util';
 
 export default function SearchForm() {
@@ -30,8 +31,8 @@ export default function SearchForm() {
 
   useEffect(() => {
     function bodyClickHandler(this: Window, e: MouseEvent) {
-      e.preventDefault();
       if (!(e.target as HTMLElement).closest('form')) {
+        e.preventDefault();
         setSuggesting(false);
         setActiveSuggestIndex(-1);
         searchBoxRef.current?.blur();
@@ -131,7 +132,7 @@ export default function SearchForm() {
         )}
       >
         <div className='flex-1 flex flex-col'>
-          <div className='flex-1 flex justify-between px-4'>
+          <div className='flex-1 flex justify-between pl-4 pr-6'>
             <input
               className='focus-visible:border-none focus-visible:outline-none flex-1'
               value={searchText}
@@ -140,14 +141,19 @@ export default function SearchForm() {
               ref={searchBoxRef}
             />
             <div className='relative flex justify-center items-center'>
-              {!!searchText && (
+              {!!searchText && !loading && (
                 <button
                   className='absolute w-6 h-6 focus-visible:rounded-full cursor-pointer flex justify-center items-center'
                   type='button'
                   onClick={dismissHandler}
                 >
-                  <XIcon size={22} className='right-0.5' />
+                  <XIcon size={22} className='right-0' />
                 </button>
+              )}
+              {!!data && loading && (
+                <div className='absolute w-6 h-6 focus-visible:rounded-full cursor-pointer flex justify-center items-center'>
+                  <LoadingSpinner />
+                </div>
               )}
             </div>
           </div>

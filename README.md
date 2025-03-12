@@ -13,6 +13,10 @@ This is a submission for the [GovTech DCube Developer Applicant Coding Challenge
 - 📷 Preview: TODO
 - 📝 [Assumptions](#assumptions)
 
+<h2 id="deployments">Deployments</h2>
+
+https://staging.dcqbaajl0smf5.amplifyapp.com/
+
 <h2 id="project-structure">🗄️ Project Structure</h2>
 
 ```

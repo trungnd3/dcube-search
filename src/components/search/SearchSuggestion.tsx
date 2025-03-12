@@ -1,6 +1,5 @@
 import { KeyboardEventHandler } from 'react';
 import { Suggestion } from '../../interface/suggestion';
-import LoadingSpinner from '../ui/LoadingSpinner';
 import { cn } from '../../lib/util';
 
 interface SearchSuggestionProps {
@@ -21,7 +20,6 @@ export default function SearchSuggestion({
 
   return (
     <div className='absolute bg-white shadow-primary w-full top-[1px] left-0 rounded-lg rounded-t-none'>
-      {!!data && loading && <LoadingSpinner />}
       {!loading && !error && data?.suggestions && data.suggestions.length > 0 && (
         <ul className='flex flex-col'>
           {data.suggestions.map((suggestion, index) => (

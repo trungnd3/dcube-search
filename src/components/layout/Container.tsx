@@ -12,7 +12,7 @@ export default function Container({ children, className, innerClassName }: Conta
     <div
       className={cn('w-full py-1 flex justify-center', className)}
     >
-      <div className={cn('md:w-[77%] flex gap-2', innerClassName)}>
+      <div className={cn('w-[90%] lg:w-[77%] flex gap-2', innerClassName)}>
         {children}
       </div>
     </div>
