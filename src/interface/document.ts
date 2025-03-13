@@ -1,4 +1,3 @@
-
 export interface DocumentResult {
   Page: number;
   PageSize: number;

@@ -6,7 +6,7 @@ export default function LoadingSpinner({ className }: { className?: string }) {
       className={cn('size-5 animate-spin text-primary', className)}
       xmlns='http://www.w3.org/2000/svg'
       fill='none'
-      viewBox='0 0 22 22'
+      viewBox='0 0 24 24'
     >
       <circle
         className='opacity-25'
