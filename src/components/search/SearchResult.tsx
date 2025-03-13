@@ -29,7 +29,7 @@ export default function SearchResult({ searchKey }: SearchResultProps) {
   return (
     <>
       {!!data.ResultItems.length && data.ResultItems.length > 0 && (
-        <div className='block'>
+        <div className='block' data-testid="search-result">
           <h1 className='semibold'>
             Showing {firstNumber} - {lastNumber} of {data.TotalNumberOfResults}{' '}
             results

@@ -4,7 +4,6 @@ import { cn } from '../../lib/util';
 interface SearchSuggestionProps {
   suggestions: string[];
   error: string;
-  // onChangeActiveIndex: (key: string, len: number) => void;
   doSearch: (text: string) => void;
   activeIndex: number;
 }
@@ -12,7 +11,6 @@ interface SearchSuggestionProps {
 export default function SearchSuggestion({
   suggestions,
   error,
-  // onChangeActiveIndex,
   doSearch,
   activeIndex,
 }: SearchSuggestionProps) {
@@ -21,7 +19,7 @@ export default function SearchSuggestion({
   };
 
   return (
-    <div className='absolute bg-white shadow-primary w-full top-[1px] left-0 rounded-lg rounded-t-none'>
+    <div className='absolute bg-white shadow-secondary w-full top-[1px] left-0 rounded-lg rounded-t-none' data-testid="search-suggestion">
       {!error && (
         <ul className='flex flex-col'>
           {suggestions &&

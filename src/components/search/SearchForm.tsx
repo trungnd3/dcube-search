@@ -145,6 +145,7 @@ export default function SearchForm() {
     <form
       className='w-full h-14 font-semibold text-lg leading-[26px]'
       onSubmit={submitHandler}
+      data-testid="search-form"
     >
       <div
         className={cn(
@@ -160,6 +161,7 @@ export default function SearchForm() {
               onChange={searchTextChangeHandler}
               onKeyUp={keyUpHandler}
               ref={searchBoxRef}
+              data-testid="search-input"
             />
             <div className='relative flex justify-center items-center'>
               {!!searchText && !loading && (
@@ -167,6 +169,7 @@ export default function SearchForm() {
                   className='absolute w-6 h-6 focus-visible:rounded-full cursor-pointer flex justify-center items-center'
                   type='button'
                   onClick={dismissHandler}
+                  data-testid="dismiss-button"
                 >
                   <XIcon size={22} className='right-0' />
                 </button>
@@ -197,6 +200,7 @@ export default function SearchForm() {
         <button
           type='submit'
           className='rounded-lg bg-primary text-white px-9 flex gap-1 items-center cursor-pointer lightbold'
+          data-testid="submit-button"
         >
           <div className='w-[26px] h-[26px] flex justify-center items-center'>
             <Search size={18} />
