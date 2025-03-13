@@ -6,7 +6,11 @@ export default function SearchResultPage() {
   const [searchParams] = useSearchParams();
 
   const key = searchParams.get('key') || '';
-  return <Layout>
-    <SearchResult searchKey={key} />
-  </Layout>;
+  return (
+    <Layout>
+      <div data-testid='search-result-page'>
+        <SearchResult searchKey={key} />
+      </div>
+    </Layout>
+  );
 }

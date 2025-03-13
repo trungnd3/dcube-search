@@ -11,6 +11,7 @@ export default function Container({ children, className, innerClassName }: Conta
   return (
     <div
       className={cn('w-full py-1 flex justify-center', className)}
+      data-testid="container"
     >
       <div className={cn('w-[90%] lg:w-[77%] flex gap-2', innerClassName)}>
         {children}
