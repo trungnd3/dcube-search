@@ -4,13 +4,13 @@ This is a submission for the [GovTech DCube Developer Applicant Coding Challenge
 
 ## 💻 Table of Contents
 
-- 🔗 Deployments: TODO
+- 🔗 [Deployments]: (#deployments)
 - 🗄️ [Project Structure](#project-structure)
 - ⚙️ [Installation](#installation)
 - 🚄 [Run the App](#run-the-app)
-- 🧪 Run Unit Tests: TODO
+- 🧪 [Run Unit Tests]: (#run-unit-tests)
 - 🧱 [Technologies Used](#technologies-used)
-- 📷 Preview: TODO
+- 📷 [Preview]: (#preview)
 - 📝 [Assumptions](#assumptions)
 
 <h2 id="deployments">Deployments</h2>
@@ -81,11 +81,35 @@ npm run dev
 
 Open your browser and go to http://localhost:5173 (vite serves the app by default on port 5173)
 
+<h2 id="run-unit-tests">🧪 Run Unit Tests</h2>
+
+```bash
+npm run test
+```
+
+![test coverage](./snapshots/coverage.png)
+
+Test library used:
+
+- [Vitest](https://vitest.dev/)
+- [React Testing Library](https://testing-library.com/)
+
 <h2 id="technologies-used">🧱 Technologies Used</h2>
 
 - **Frontend**: ReactJS, Typescript, TailwindCSS
 - **Build tool**: Vite
-- **Testing tool**: React Testing Library, Jest
+- **Testing tool**: React Testing Library, Vitest
+
+<h2 id="preview">📷 Preview</h2>
+
+- **Desktop view**\
+![landing page](./snapshots/landing-page-desktop.png)
+![search result page](./snapshots/search-result-desktop.png)
+![suggestion](./snapshots/suggestion-desktop.png)
+- **Mobile view**\
+![landing page](./snapshots/landing-page-mobile.png)
+![search result page](./snapshots/search-result-mobile.png)
+![suggestion](./snapshots/suggestion-mobile.png)
 
 <h2 id="assumptions">📝 Assumptions</h2>
 
