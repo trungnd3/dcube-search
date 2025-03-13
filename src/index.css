@@ -2,7 +2,10 @@
 
 @theme {
   --color-primary: #1c76d5;
+  --color-primary-fade-1: #1c76d547;
+  --color-primary-fade-2: #1c76d524;
   --shadow-primary: 0 4px 8px 4px #E0E4E559;
+  --shadow-secondary: 0 4px 8px 4px #75777759;
 }
 
 html,

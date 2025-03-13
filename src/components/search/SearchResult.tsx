@@ -1,8 +1,6 @@
 import { useEffect } from 'react';
-
 import { useRequest } from '../../hooks/use-request';
 import LoadingSpinner from '../ui/LoadingSpinner';
-import { DocumentResult } from '../../interface/document';
 import SearchResultItem from './SearchResultItem';
 
 interface SearchResultProps {
@@ -10,15 +8,14 @@ interface SearchResultProps {
 }
 
 export default function SearchResult({ searchKey }: SearchResultProps) {
-  console.log(searchKey);
-
-  const { request, response } = useRequest<DocumentResult>();
+  const { request, response } = useRequest();
 
   useEffect(() => {
     request(import.meta.env.VITE_QUERY_RESULT_ENDPOINT!);
   }, [request]);
 
   const { data, loading, error } = response;
+
 
   if (!data || (!!data && loading)) {
     return <LoadingSpinner />;
@@ -32,7 +29,7 @@ export default function SearchResult({ searchKey }: SearchResultProps) {
   return (
     <>
       {!!data.ResultItems.length && data.ResultItems.length > 0 && (
-        <div className='block'>
+        <div className='block' data-testid="search-result">
           <h1 className='semibold'>
             Showing {firstNumber} - {lastNumber} of {data.TotalNumberOfResults}{' '}
             results
@@ -41,6 +38,7 @@ export default function SearchResult({ searchKey }: SearchResultProps) {
             {data.ResultItems.map((item) => (
               <li key={item.DocumentId} className='flex flex-col gap-2'>
                 <SearchResultItem
+                  searchTearms={searchKey.split(' ')}
                   title={item.DocumentTitle}
                   excerpt={item.DocumentExcerpt}
                   uri={item.DocumentURI}

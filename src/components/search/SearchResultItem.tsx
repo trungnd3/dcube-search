@@ -1,21 +1,44 @@
-import { TextContent } from "../../interface/document";
-import HighlightedText from "../ui/HighlightedText";
+import { TextContent } from '../../interface/document';
+import Highlighter from 'react-highlight-words';
 
 interface SearchResultItem {
+  searchTearms: string[];
   title: TextContent;
   excerpt: TextContent;
   uri: string;
 }
 
 export default function SearchResultItem({
-  title, excerpt, uri
+  searchTearms,
+  title,
+  excerpt,
+  uri,
 }: SearchResultItem) {
-
   return (
     <>
-      <HighlightedText paragraph={title} className='text-primary semibold' tag="h2" />
-      <HighlightedText paragraph={excerpt} className='regular-text' />
-      <a href={uri} className="regular-link cursor-pointer">{uri}</a>
+      <a href={uri} className='text-primary semibold'>
+        <h2>
+          <Highlighter
+            highlightClassName='text-primary font-extrabold bg-white'
+            activeClassName='font-extrabold'
+            searchWords={searchTearms}
+            autoEscape={true}
+            textToHighlight={title.Text}
+          />
+        </h2>
+      </a>
+      <p>
+        <Highlighter
+          highlightClassName=' font-bold bg-white leading-6'
+          activeClassName='font-extrabold'
+          searchWords={searchTearms}
+          autoEscape={true}
+          textToHighlight={excerpt.Text}
+        />
+      </p>
+      <a href={uri} className='regular-link cursor-pointer'>
+        {uri}
+      </a>
     </>
-  )
+  );
 }
