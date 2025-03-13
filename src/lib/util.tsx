@@ -17,7 +17,7 @@ function uniq(a: string[]) {
   });
 }
 
-export function matchSearchTerm(regex: RegExp, text: string) {
+function matchSearchTerm(regex: RegExp, text: string) {
   const result: string[] = [];
   let m;
 
@@ -29,7 +29,7 @@ export function matchSearchTerm(regex: RegExp, text: string) {
 
     // The result can be accessed through the `m`-variable.
     m.forEach((match) => {
-      result.push(match);
+      result.push(match.trim());
     });
   }
 
