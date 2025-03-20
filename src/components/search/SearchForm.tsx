@@ -8,7 +8,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useRequest } from '../../hooks/use-request';
 import SearchSuggestion from './SearchSuggestion';
 import LoadingSpinner from '../ui/LoadingSpinner';

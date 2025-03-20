@@ -1,4 +1,4 @@
-import { useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
 import SearchResult from '../components/search/SearchResult';
 

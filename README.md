@@ -4,13 +4,13 @@ This is a submission for the [GovTech DCube Developer Applicant Coding Challenge
 
 ## 💻 Table of Contents
 
-- 🔗 [Deployments]: (#deployments)
+- 🔗 [Deployments](#deployments)
 - 🗄️ [Project Structure](#project-structure)
 - ⚙️ [Installation](#installation)
 - 🚄 [Run the App](#run-the-app)
-- 🧪 [Run Unit Tests]: (#run-unit-tests)
+- 🧪 [Run Unit Tests](#run-unit-tests)
 - 🧱 [Technologies Used](#technologies-used)
-- 📷 [Preview]: (#preview)
+- 📷 [Preview](#preview)
 - 📝 [Assumptions](#assumptions)
 
 <h2 id="deployments">Deployments</h2>
@@ -29,7 +29,7 @@ src
 │   ├── layout                    # layout components which define the page's layout
 │   │   ├── Banner.tsx            # is the top-most banner containg logo
 │   │   ├── Container.tsx         # limits the max width of elements
-│   │   ├── Header.tsx            # is the Hader with Sarch Form
+│   │   ├── Header.tsx            # is the Header with Search Form
 │   │   └── Layout.tsx            # is the overall Layout of the pages
 │   ├── search                    # contains components related to search feature
 │   │   ├── SearchForm.tsx        # handles search form UI and events
