@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import LandingPage from './pages/Landing';
-import { BrowserRouter, Route, Routes } from 'react-router';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import SearchResultPage from './pages/SearchResult';
 
 createRoot(document.getElementById('root')!).render(

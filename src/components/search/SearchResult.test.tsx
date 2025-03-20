@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { documents } from '../../../tests/mock';
 import { useRequest } from '../../hooks/use-request';
 import { DocumentResult } from '../../interface/document';
-import { BrowserRouter } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 import SearchResult from './SearchResult';
 
 vi.mock('../../hooks/use-request');

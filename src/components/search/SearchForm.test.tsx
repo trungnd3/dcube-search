@@ -1,12 +1,12 @@
 import { render, RenderResult, screen, waitFor } from '@testing-library/react';
 import userEvent, { UserEvent } from '@testing-library/user-event';
-import { BrowserRouter } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 import SearchForm from './SearchForm';
 
 const mockedUseNavigate = vi.fn();
-vi.mock('react-router', async () => {
-  const mod = await vi.importActual<typeof import('react-router')>(
-    'react-router'
+vi.mock('react-router-dom', async () => {
+  const mod = await vi.importActual<typeof import('react-router-dom')>(
+    'react-router-dom'
   );
   return {
     ...mod,
