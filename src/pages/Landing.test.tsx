@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import Landing from './Landing';
-import { BrowserRouter } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 
 describe('Landing', () => {
   it('renders the Landing component', () => {
