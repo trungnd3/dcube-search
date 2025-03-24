@@ -1,7 +1,9 @@
 import { MouseEventHandler } from 'react';
 import { cn } from '../../lib/util';
+import Highlighter from 'react-highlight-words';
 
 interface SearchSuggestionProps {
+  searchTerms: string[],
   suggestions: string[];
   error: string;
   doSearch: (text: string) => void;
@@ -9,6 +11,7 @@ interface SearchSuggestionProps {
 }
 
 export default function SearchSuggestion({
+  searchTerms,
   suggestions,
   error,
   doSearch,
@@ -33,7 +36,13 @@ export default function SearchSuggestion({
                 )}
                 onClick={itemClickHandler}
               >
-                {suggestion}
+                <Highlighter
+                  highlightClassName=' font-bold bg-transparent leading-6'
+                  activeClassName='font-extrabold'
+                  searchWords={searchTerms}
+                  autoEscape={true}
+                  textToHighlight={suggestion}
+                />
               </li>
             ))}
         </ul>

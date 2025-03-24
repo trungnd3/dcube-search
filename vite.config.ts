@@ -9,5 +9,10 @@ export default defineConfig({
     globals: true, // Enables global test functions like `describe`, `it`
     environment: 'jsdom', // Simulates a browser-like environment
     setupFiles: 'tests/setup.ts', // Setup file (optional)
+    exclude: ['e2e', 'node_modules', 'dist'],
+    coverage: {
+      provider: 'istanbul',
+      exclude: ['e2e', 'node_modules', 'dist', '**/*.config.{js,ts}']
+    }
   },
 });

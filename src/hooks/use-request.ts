@@ -13,20 +13,30 @@ export function useRequest() {
   });
 
   const request = useCallback(
-    async (endpoint: string, onSuccess?: (data: DocumentResult) => void) => {
+    async (
+      endpoint: string,
+      options?: {
+        onSuccess?: (data: DocumentResult) => void,
+        onFilterData?: (data: DocumentResult) => DocumentResult,
+      }
+    ) => {
       setResponse((prev) => ({ ...prev, loading: true }));
       try {
         const res = await fetch(endpoint);
 
-        const data: DocumentResult = await res.json();
+        let data: DocumentResult = await res.json();
+
+        if (options && options.onFilterData) {
+          data = options.onFilterData(data);
+        }
 
         setResponse((prev) => ({
           ...prev,
-          data
-        }))
+          data,
+        }));
 
-        if (onSuccess) {
-          onSuccess(data);
+        if (options && options.onSuccess) {
+          options.onSuccess(data);
         }
       } catch (error) {
         setResponse((prev) => ({

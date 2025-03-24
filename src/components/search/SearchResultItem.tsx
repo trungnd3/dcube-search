@@ -2,14 +2,14 @@ import { TextContent } from '../../interface/document';
 import Highlighter from 'react-highlight-words';
 
 interface SearchResultItem {
-  searchTearms: string[];
+  searchTerms: string[];
   title: TextContent;
   excerpt: TextContent;
   uri: string;
 }
 
 export default function SearchResultItem({
-  searchTearms,
+  searchTerms,
   title,
   excerpt,
   uri,
@@ -21,7 +21,7 @@ export default function SearchResultItem({
           <Highlighter
             highlightClassName='text-primary font-extrabold bg-white'
             activeClassName='font-extrabold'
-            searchWords={searchTearms}
+            searchWords={searchTerms}
             autoEscape={true}
             textToHighlight={title.Text}
           />
@@ -31,7 +31,7 @@ export default function SearchResultItem({
         <Highlighter
           highlightClassName=' font-bold bg-white leading-6'
           activeClassName='font-extrabold'
-          searchWords={searchTearms}
+          searchWords={searchTerms}
           autoEscape={true}
           textToHighlight={excerpt.Text}
         />
