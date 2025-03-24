@@ -170,7 +170,7 @@ describe('SearchForm', () => {
   });
 
   it('select next item in suggestion list', async () => {
-    const input = form.queryByTestId('search-input') as HTMLInputElement;
+    const input = await form.findByTestId('search-input') as HTMLInputElement;
     const searchInputValue = 'child';
 
     await act(async () => {
@@ -183,6 +183,8 @@ describe('SearchForm', () => {
       firstItem = form.container.querySelector('ul li:first-of-type')!;
       expect(firstItem).toBeInTheDocument();
       expect(firstItem?.classList).not.toContain('bg-primary-fade-2');
+    }, {
+      timeout: 2000
     });
 
     await act(async () => {

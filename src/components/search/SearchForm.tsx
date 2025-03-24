@@ -14,6 +14,7 @@ import { useRequest } from '../../hooks/use-request';
 import SearchSuggestion from './SearchSuggestion';
 import LoadingSpinner from '../ui/LoadingSpinner';
 import { cn, findSuggestions } from '../../lib/util';
+import { useDebounce } from '../../hooks/use-debounce';
 
 export default function SearchForm() {
   const navigate = useNavigate();
@@ -66,22 +67,23 @@ export default function SearchForm() {
     }
   }, [suggesting]);
 
+  useDebounce({
+    callback: useCallback(() => {
+      if (searchText && searchText.length >= 2) {
+        request(import.meta.env.VITE_QUERY_RESULT_ENDPOINT!, {
+          onSuccess: (data) => {
+            const foundSuggestions = findSuggestions(searchText, data);
+            setSuggestions(foundSuggestions);
+          },
+        });
+      }
+    }, [searchText, request]),
+  });
+
   const searchTextChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
     setSearchText(value);
-
-    if (value.length >= 2) {
-      setSuggesting(true);
-      // Fetch search suggestions
-      request(import.meta.env.VITE_QUERY_RESULT_ENDPOINT!, {
-        onSuccess: (data) => {
-          const foundSuggestions = findSuggestions(searchText, data);
-          setSuggestions(foundSuggestions);
-        },
-      });
-    } else {
-      setSuggesting(false);
-    }
+    setSuggesting(value.length >= 2);
   };
 
   const dismissHandler: MouseEventHandler<HTMLButtonElement> = (event) => {
