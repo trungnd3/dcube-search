@@ -16,7 +16,10 @@ describe('SearchResult', () => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         _endpoint: string,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        _onSuccess?: (data: DocumentResult) => void
+        _options?: {
+          _onFilteredData?: (data: DocumentResult) => DocumentResult,
+          _onSuccess?: (data: DocumentResult) => void
+        }
       ) => {}
     ),
     response: {
@@ -38,19 +41,21 @@ describe('SearchResult', () => {
   });
 
   it('does not render SearchResult component', () => {
-    returnValue.response.data.ResultItems = []
+    returnValue.response.data.ResultItems = [];
+    returnValue.response.data.TotalNumberOfResults = 0;
     useRequestClient.mockReturnValue(returnValue);
     render(
       <BrowserRouter>
-        <SearchResult searchKey='child' />
+        <SearchResult searchKey='testsjla' />
       </BrowserRouter>
     );
 
     expect(screen.queryByTestId('search-result')).not.toBeInTheDocument();
+    expect(screen.queryByText('No result found.')).toBeInTheDocument();
   });
 
   it('renders no result', () => {
-    returnValue.response.error = 'Error happened'
+    returnValue.response.error = 'Error happened';
     useRequestClient.mockReturnValue(returnValue);
     render(
       <BrowserRouter>
@@ -59,6 +64,6 @@ describe('SearchResult', () => {
     );
 
     expect(screen.queryByTestId('search-result')).not.toBeInTheDocument();
-    expect(screen.queryByText('No result.')).toBeInTheDocument();
+    expect(screen.queryByText('No result found.')).toBeInTheDocument();
   });
 });

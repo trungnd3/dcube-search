@@ -36,12 +36,16 @@ function matchSearchTerm(regex: RegExp, text: string) {
   return result;
 }
 
+function getSearchRegex(searchTerm: string) {
+  return RegExp(`\\s\\S+\\s${searchTerm}(?:\\S+)?\\s?(?:\\S+)?`, 'gmi');
+}
+
 export function findSuggestions(
   searchTerm: string,
   doc: DocumentResult,
   limit = 5
 ) {
-  const regex = RegExp(`\\s\\S+\\s${searchTerm}(?:\\S+)?\\s?(?:\\S+)?`, 'gmi');
+  const regex = getSearchRegex(searchTerm);
   let suggestions: string[] = [];
 
   doc.ResultItems.forEach((item) => {
@@ -59,4 +63,22 @@ export function findSuggestions(
   }
 
   return suggestions;
+}
+
+export function filterData(
+  searchTerm: string,
+  doc: DocumentResult,
+) {
+  const regex = getSearchRegex(searchTerm);
+
+  doc.ResultItems = doc.ResultItems.filter((item) => {
+    const title = item.DocumentTitle.Text;
+    const excerpt = item.DocumentExcerpt.Text;
+
+    return matchSearchTerm(regex, title).length > 0 || matchSearchTerm(regex, excerpt).length > 0;
+  });
+
+  doc.TotalNumberOfResults = doc.ResultItems.length;
+
+  return doc;
 }

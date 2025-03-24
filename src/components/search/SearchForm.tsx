@@ -4,6 +4,7 @@ import {
   FormEvent,
   KeyboardEventHandler,
   MouseEventHandler,
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -29,23 +30,23 @@ export default function SearchForm() {
   const { request, response } = useRequest();
   const { loading, error } = response;
 
-  useEffect(() => {
-    function bodyClickHandler(this: Window, e: MouseEvent) {
-      if (!(e.target as HTMLElement).closest('form')) {
-        e.preventDefault();
-        setSuggesting(false);
-        setActiveSuggestIndex(-1);
-        searchBoxRef.current?.blur();
-        document.body.classList.remove('overflow-hidden');
-      }
+  const bodyClickHandler = useCallback((e: MouseEvent) => {
+    if (!(e.target as HTMLElement).closest('form')) {
+      e.preventDefault();
+      setSuggesting(false);
+      setActiveSuggestIndex(-1);
+      searchBoxRef.current?.blur();
+      document.body.classList.remove('overflow-hidden');
     }
+  }, []);
 
+  useEffect(() => {
     window.addEventListener('click', bodyClickHandler);
 
     return () => {
       window.removeEventListener('click', bodyClickHandler);
     };
-  }, []);
+  }, [bodyClickHandler]);
 
   useEffect(() => {
     if (activeSuggestIndex === -1) {
@@ -72,9 +73,11 @@ export default function SearchForm() {
     if (value.length >= 2) {
       setSuggesting(true);
       // Fetch search suggestions
-      request(import.meta.env.VITE_QUERY_RESULT_ENDPOINT!, (data) => {
-        const foundSuggestions = findSuggestions(searchText, data);
-        setSuggestions(foundSuggestions);
+      request(import.meta.env.VITE_QUERY_RESULT_ENDPOINT!, {
+        onSuccess: (data) => {
+          const foundSuggestions = findSuggestions(searchText, data);
+          setSuggestions(foundSuggestions);
+        },
       });
     } else {
       setSuggesting(false);
@@ -102,7 +105,7 @@ export default function SearchForm() {
         setActiveSuggestIndex(-1);
       }
     } else if (eventKey === 'ArrowUp') {
-      if (activeSuggestIndex > -2) {
+      if (activeSuggestIndex > -1) {
         setActiveSuggestIndex((prev) => prev - 1);
       } else {
         setActiveSuggestIndex(len - 1);
@@ -117,7 +120,7 @@ export default function SearchForm() {
     navigate(searchText ? `/search-result?key=${searchText}` : `/`);
   };
 
-  const keyUpHandler: KeyboardEventHandler<
+  const keyDownHandler: KeyboardEventHandler<
     HTMLInputElement | HTMLLIElement | HTMLDivElement
   > = (event) => {
     if (['ArrowDown', 'ArrowUp'].includes(event.key)) {
@@ -145,7 +148,7 @@ export default function SearchForm() {
     <form
       className='w-full h-14 font-semibold text-lg leading-[26px]'
       onSubmit={submitHandler}
-      data-testid="search-form"
+      data-testid='search-form'
     >
       <div
         className={cn(
@@ -157,11 +160,13 @@ export default function SearchForm() {
           <div className='flex-1 flex justify-between pl-4 pr-6'>
             <input
               className='focus-visible:border-none focus-visible:outline-none flex-1'
-              value={searchText}
+              autoComplete='off'
+              spellCheck={false}
+              value={searchText ?? ''}
               onChange={searchTextChangeHandler}
-              onKeyUp={keyUpHandler}
+              onKeyDown={keyDownHandler}
               ref={searchBoxRef}
-              data-testid="search-input"
+              data-testid='search-input'
             />
             <div className='relative flex justify-center items-center'>
               {!!searchText && !loading && (
@@ -169,7 +174,7 @@ export default function SearchForm() {
                   className='absolute w-6 h-6 focus-visible:rounded-full cursor-pointer flex justify-center items-center'
                   type='button'
                   onClick={dismissHandler}
-                  data-testid="dismiss-button"
+                  data-testid='dismiss-button'
                 >
                   <XIcon size={22} className='right-0' />
                 </button>
@@ -185,10 +190,12 @@ export default function SearchForm() {
             <div
               className='relative'
               ref={searchSuggestionRef}
-              onKeyUp={keyUpHandler}
-              tabIndex={0}
+              onKeyDown={keyDownHandler}
+              data-testid='suggestion-container'
+              tabIndex={-1}
             >
               <SearchSuggestion
+                searchTerms={searchText.split(' ')}
                 suggestions={suggestions}
                 error={error}
                 doSearch={doSearch}
@@ -200,7 +207,7 @@ export default function SearchForm() {
         <button
           type='submit'
           className='rounded-lg bg-primary text-white px-9 flex gap-1 items-center cursor-pointer lightbold'
-          data-testid="submit-button"
+          data-testid='submit-button'
         >
           <div className='w-[26px] h-[26px] flex justify-center items-center'>
             <Search size={18} />
