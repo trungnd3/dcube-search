@@ -33,6 +33,7 @@
     "@types/react-dom": "^19.0.4",
     "@types/react-highlight-words": "^0.20.0",
     "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/coverage-istanbul": "^3.0.8",
     "@vitest/coverage-v8": "^3.0.8",
     "eslint": "^9.21.0",
     "eslint-plugin-react-hooks": "^5.1.0",
