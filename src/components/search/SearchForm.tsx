@@ -131,7 +131,7 @@ export default function SearchForm() {
         changeActiveSuggestIndex(event.key, suggestions.length);
       }
     }
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && activeSuggestIndex > -1) {
       event.preventDefault();
       const item = event.currentTarget.querySelector(
         `li:nth-of-type(${activeSuggestIndex + 1})`
