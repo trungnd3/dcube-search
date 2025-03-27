@@ -17,9 +17,9 @@ This is a submission for the [GovTech DCube Developer Applicant Coding Challenge
 
 ### AWS
 The project has a [github workflow](.github/workflows/deploy.yml) to build the latest changes and to push the built to a private S3 bucket. A Cloudfront distribution, with OAC linked to the bucket, serves the content globally:
-[Distribution Domain Name 🔗](https://d8ppkm401wbc.cloudfront.net/)
+[Distribution Domain Name 🔗](https://d3vo8jgo558vmv.cloudfront.net/)
 ### (Fallback) AWS Amplify
- [AWS Amplify Domain 🔗](https://staging.dcqbaajl0smf5.amplifyapp.com/)
+ [AWS Amplify Domain 🔗](https://staging.dqlah6bcwhoso.amplifyapp.com/)
 
 <h2 id="project-structure">🗄️ Project Structure</h2>
 
